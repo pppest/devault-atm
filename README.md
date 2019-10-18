@@ -7,6 +7,8 @@ v. 0.01 - IS WHAT IT IS ALPHA
 Terminal only
 Known problems: delight wallet throws error if there are unconfirmed transactions
 
+plans: clean up, move welcome text to config.py, maybe a qt interface
+
 included example log file
 
 devault.py
