@@ -19,8 +19,9 @@ devault.load_wallet(c.ATM_WALLET)
 # initiate log file
 log_file_name = "devaultatm-" + str(date.today()) + ".log"
 with open(log_file_name, 'a') as log_file:
-    log_file.write('# date, price with fee, atm balance, coins inserted, \
-                    dvt bought, wallet, tx\n')
+    log_file.write('# date, price with fee, atm balance, coins inserted,\
+ dvt bought, wallet, tx\n')
+    log_aftet_loop = True
 
     # main loop
     while True:
@@ -29,7 +30,8 @@ with open(log_file_name, 'a') as log_file:
         coins_inserted = 0
         dvt_bought = 0
         atm_balance = devault.get_balance(c.ATM_WALLET)
-        log_file.write(f'{datetime.now()}, {price_with_fee}, {atm_balance}, ')
+        if log_aftet_loop is True:
+            log_file.write(f'{datetime.now()}, {price_with_fee}, {atm_balance}, ')
         os.system('clear')  # clear terminal
 
         # print welcome msg
@@ -80,3 +82,6 @@ with open(log_file_name, 'a') as log_file:
 
             coinstuff.delay_print("Thank you for buying DeVault!!!")
             time.sleep(5)
+            log_aftet_loop = True
+        else:
+            log_aftet_loop = False
