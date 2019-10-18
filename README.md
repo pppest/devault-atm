@@ -5,9 +5,9 @@ USE AT OWN RISK!
 
 v. 0.01 - IS WHAT IT IS ALPHA
 Terminal only
-Known problems: delight wallet throws error if there are unconfirmed transactions
+Known problems: delight wallet throws error if there are unconfirmed transactions, fix logging newlines in case of no buy
 
-plans: clean up, move welcome text to config.py, maybe a qt interface
+plans: maybe move welcome text to config.py, maybe a qt interface
 
 included example log file
 
