@@ -1,4 +1,4 @@
-# devault-atm\
+# devault-atm
 A python ATM for DeVault\
 \
 USE AT OWN RISK!\
@@ -14,12 +14,12 @@ included example log file\
 devault.py\
 talks to delight daemon\
 
-qr.py
+qr.py\
 reads qr codes w webcam using opencv and zbar
 
-coinslot.py
+coinslot.py\
 reads coinslot via USB encoder
 
-coinstuff.py
-need to change the name
+coinstuff.py\
+need to change the name\
 has fucntions to get coinprice and slow print 
