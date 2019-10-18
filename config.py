@@ -5,7 +5,7 @@ COIN_DECIMALS = 8
 
 
 # atm specific
-ATM_FEE = 0.01337
+ATM_FEE = 1   # in percent
 ATM_WALLET = '/home/ok/.delight/wallets/ATM_WALLET'
 TX_FEE = 0.001
 

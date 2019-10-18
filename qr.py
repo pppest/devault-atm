@@ -1,3 +1,4 @@
+# this code is mostly a mixup based on code found in the links below
 # zbar: https://www.pyimagesearch.com/2018/05/21/an-opencv-barcode-and-qr-code-
 #   scanner-with-zbar/
 # video: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/

@@ -9,13 +9,15 @@ def initiate_device(vendor_id, product_id):
 
     # check if device connected
     if device is None:
-        raise ValueError('Device not found')
+        raise ValueError('Device not found!')
+
     # make sure kernel is dettached
     if device.is_kernel_driver_active(0):
-        print("Kernel driver active, detaching")
+        print("Kernel driver active, detaching.")
         device.detach_kernel_driver(0)
     else:
-        print("Kernel driver not active")
+        print("Kernel driver not active.")
+
     # set to first config
     device.set_configuration()
     return device
@@ -23,7 +25,7 @@ def initiate_device(vendor_id, product_id):
 
 def read_usb(device):
     data = device.read(0x81, 8, timeout=0)
-    return data  # input K12 is [6]
+    return data
 
 
 def coinslot(device, price_with_fee, atm_balance):
@@ -37,8 +39,10 @@ def coinslot(device, price_with_fee, atm_balance):
     while True:
         dvt_bought = coins_inserted / price_with_fee
         d = read_usb(device)[6]    # input K12 on encoder is [6]==128
-        d2 = read_usb(device)[5]  # input K1 on encoder is [5]==31
+        # d2 is an extra button I use to stop the loop when testing
+        # d2 = read_usb(device)[5]  # input K1 on encoder is [5]==31
 
+        # TODO: test max buy
         if max_buy <= dvt_bought:
             return coins_inserted
 

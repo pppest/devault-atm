@@ -1,5 +1,7 @@
 # this module is for communicating with the DeLight wallet
 # to read atm devault wallet and send bought amount to client
+# for readability and consistency I define commands for os as a string
+# before calling
 
 import os
 import json
@@ -8,21 +10,23 @@ import config as c
 
 def start_daemon():
     print('Starting daemon.')
-    os.system('delight daemon start')
+    cmd = 'delight daemon start'
+    os.system(cmd)
     return
 
 
 def stop_daemon():
-    print('Stopping daemon.')
-    os.system('delight daemon stop')
-    return 1
+    print('Stopping daemon')
+    cmd = 'delight daemon stop'
+    os.system(cmd)
+    return
 
 
 def load_wallet(path_to_wallet):
-    print('Loading wallet.')
+    print('Loading wallet...')
     cmd = f'delight daemon load_wallet -w {path_to_wallet}'
     os.system(cmd)
-    return 1
+    return
 
 
 def get_balance(path_to_wallet):
@@ -30,6 +34,7 @@ def get_balance(path_to_wallet):
     cmd = f'delight getbalance -w {path_to_wallet}'
     balance_data = os.popen(cmd).read()
     # use json to convert str to dict and get balance
+    # and make sure atm balance is updated
     confirmed_balance = float(json.loads(balance_data)['confirmed'])
     if len(json.loads(balance_data)) > 1:
         unconfirmed_balance = float(json.loads(balance_data)['unconfirmed'])
@@ -59,8 +64,7 @@ def deposit(address, amount, path_to_wallet):
 
 
 def payout_to_client(address, amount, path_to_wallet):
-    # start_daemon()
+    start_daemon()  # make sure daemon is running
     load_wallet(path_to_wallet)
     deposit(address, amount, path_to_wallet)
-    # stop_daemon()
     return
