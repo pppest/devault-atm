@@ -15,10 +15,12 @@ def initiate_device(vendor_id, product_id):
     if device.is_kernel_driver_active(0):
         print("Kernel driver active, detaching.")
         device.detach_kernel_driver(0)
+
     else:
         print("Kernel driver not active.")
 
     # set to first config
+
     device.set_configuration()
     return device
 
@@ -26,6 +28,20 @@ def initiate_device(vendor_id, product_id):
 def read_usb(device):
     data = device.read(0x81, 8, timeout=0)
     return data
+
+
+# for finding interval between pulses
+def pulse_test(device):
+    lastpulse = 0
+    intervals = []
+    while len(intervals) < 19:
+        d = read_usb(device)[6]
+        if d == 128 and (time.time() - lastpulse > 0.13):
+            pulse = time.time()
+            intervals += [pulse - lastpulse]
+            print(intervals[-1])
+            lastpulse = pulse
+    return intervals
 
 
 def coinslot(device, price_with_fee, atm_balance):
@@ -46,42 +62,55 @@ def coinslot(device, price_with_fee, atm_balance):
         if max_buy <= dvt_bought:
             return coins_inserted
 
-        if d == 128 and (time.time() - lastpulse > 0.1):
+        if d == 128 and (time.time() - lastpulse > 0.13):
             pulses += 1
             lastpulse = time.time()
 
-        elif d != 128 and (time.time() - lastpulse > 0.4):
+        elif d != 128 and (time.time() - lastpulse > 0.3):
             if pulses == 1:
                 coins_inserted += 0.5
                 lastcoin = time.time()
                 coin_switch = True
                 dvt_bought = coins_inserted / price_with_fee
-                print('You bought ' + str(dvt_bought))
+                print('You bought ' + str(0.5 / price_with_fee) + ' DVT' +
+                      ' with 0.5 MXN')
+                print('In total ' + str(dvt_bought) + ' DVT' + ' with ' +
+                      str(coins_inserted) + ' ' + c.COIN_PAIR.upper() + '\n')
             if pulses == 2:
                 coins_inserted += 1
                 lastcoin = time.time()
                 coin_switch = True
                 dvt_bought = coins_inserted / price_with_fee
-                print('You bought ' + str(dvt_bought))
+                print('You bought ' + str(1 / price_with_fee) + ' DVT' +
+                      ' with 1 MXN')
+                print('In total ' + str(dvt_bought) + ' DVT' + ' with ' +
+                      str(coins_inserted) + ' ' + c.COIN_PAIR.upper() + '\n')
             if pulses == 3:
                 coins_inserted += 2
                 lastcoin = time.time()
                 coin_switch = True
                 dvt_bought = coins_inserted / price_with_fee
-                print('You bought ' + str(dvt_bought))
+                print('You bought ' + str(2 / price_with_fee) + ' DVT' +
+                      ' with 2 MXN')
+                print('In total ' + str(dvt_bought) + ' DVT' + ' with ' +
+                      str(coins_inserted) + ' ' + c.COIN_PAIR.upper() + '\n')
             if pulses == 4:
                 coins_inserted += 5
                 lastcoin = time.time()
                 coin_switch = True
                 dvt_bought = coins_inserted / price_with_fee
-                print('You bought ' + str(dvt_bought))
+                print('You bought ' + str(5 / price_with_fee) + ' DVT' +
+                      ' with 5 MXN')
+                print('In total ' + str(dvt_bought) + 'DVT' + ' with ' +
+                      str(coins_inserted) + ' ' + c.COIN_PAIR.upper() + '\n')
             if pulses == 5:
                 coins_inserted += 10
                 lastcoin = time.time()
                 coin_switch = True
                 dvt_bought = coins_inserted / price_with_fee
-                print('You bought ' + str(dvt_bought))
-
+                print('You bought ' + str(10 / price_with_fee) + ' with 10 MXN')
+                print('In total ' + str(dvt_bought) + ' DVT' + ' with ' +
+                      str(coins_inserted) + ' ' + c.COIN_PAIR.upper() + '\n')
             if (time.time() - lastcoin) > 15 and coin_switch is True:
                 return coins_inserted
             if (time.time() - lastcoin) > 15 and coin_switch is False:

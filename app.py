@@ -12,76 +12,71 @@ from datetime import date, datetime
 # device = coinslot.initiate_device(c.USB_VENDOR_ID, c.USB_PRODUCT_ID)
 device = coinslot.initiate_device(c.USB_VENDOR_ID, c.USB_PRODUCT_ID)
 
-# make sure daemon is running and wallet is loaded
+# make sure wallet is loaded
 devault.start_daemon()
 devault.load_wallet(c.ATM_WALLET)
 
-# initiate log file
+# log file
 log_file_name = "devaultatm-" + str(date.today()) + ".log"
-with open(log_file_name, 'a') as log_file:
-    log_file.write('# date, price with fee, atm balance, coins inserted,\
- dvt bought, wallet, tx\n')
-    log_aftet_loop = True
+log_file = open(log_file_name, "a")
+log_file.write('\n# date, price with fee, atm balance, coins inserted, dvt bought, wallet, tx\n')
+# main app
+while True:
+    price_with_fee = coinstuff.price_with_fee(c.COIN, c.COIN_PAIR, c.ATM_FEE,
+                                              c.COIN_DECIMALS)
+    coins_inserted = 0
+    dvt_bought = 0
+    atm_balance = devault.get_balance(c.ATM_WALLET)
 
-    # main loop
-    while True:
-        price_with_fee = coinstuff.price_with_fee(c.COIN, c.COIN_PAIR,
-                                                  c.ATM_FEE, c.COIN_DECIMALS)
-        coins_inserted = 0
-        dvt_bought = 0
-        atm_balance = devault.get_balance(c.ATM_WALLET)
-        if log_aftet_loop is True:
-            log_file.write(f'{datetime.now()}, {price_with_fee}, {atm_balance}, ')
-        os.system('clear')  # clear terminal
+    log_file.write(f'{str(datetime.now())[0:19]}, {price_with_fee}, {atm_balance}, ')
 
-        # print welcome msg
-        coinstuff.delay_print(f'''
+    os.system('clear')  # clear terminal
 
-          _____    __      __         _ _           _______ __  __
-         |  __ \   \ \    / /        | | |       /\|__   __|  \/  |
-         | |  | | __\ \  / __ _ _   _| | |_     /  \  | |  | \  / |
-         | |  | |/ _ \ \/ / _` | | | | | __|   / /\ \ | |  | |\/| |
-         | |__| |  __/\  | (_| | |_| | | |_   / ____ \| |  | |  | |
-         |_____/ \___| \/ \__,_|\__,_|_|\__| /_/    \_|_|  |_|  |_|
-          www.devault.cc - www.devaultchat.cc - www.devault.online\a\a
+    # print welcome msg
+    coinstuff.delay_print(f'''
 
-              DeVault price is: {price_with_fee} MXN
-              Available in ATM: {atm_balance} DVT
-              Equal to:         {atm_balance*price_with_fee} MXN
-              Transaction fee:  {c.TX_FEE}
+      _____    __      __         _ _           _______ __  __
+     |  __ \   \ \    / /        | | |       /\|__   __|  \/  |
+     | |  | | __\ \  / __ _ _   _| | |_     /  \  | |  | \  / |
+     | |  | |/ _ \ \/ / _` | | | | | __|   / /\ \ | |  | |\/| |
+     | |__| |  __/\  | (_| | |_| | | |_   / ____ \| |  | |  | |
+     |_____/ \___| \/ \__,_|\__,_|_|\__| /_/    \_|_|  |_|  |_|
+      www.devault.cc - www.devaultchat.cc - www.devault.online\a\a
 
-              Transactions are rounded to 3 decimals
+          {c.COIN.capitalize()} price is: {price_with_fee} {c.COIN_PAIR.upper()}
+          Available in ATM: {atm_balance} DVT
+          Equal to:         {atm_balance*price_with_fee} {c.COIN_PAIR.upper()}
+          Transaction fee:  {c.TX_FEE}
+
+          Transactions are rounded to 3 decimals
 
 
-              INSERT COIN TO START
-              \n''')
+          INSERT COIN TO START
+          \n''')
 
-        # insert coins
-        coins_inserted = coinslot.coinslot(device, price_with_fee, atm_balance)
-        if coins_inserted is not None:
-            dvt_bought = coins_inserted / price_with_fee
+    # insert coins
+    coins_inserted = coinslot.coinslot(device, price_with_fee, atm_balance)
+    if coins_inserted is not None:
+        dvt_bought = coins_inserted / price_with_fee
 
-            print(f'''
-            Total amount of coins inserted: {coins_inserted} {c.COIN_PAIR.upper()}
-            DVT bought: {dvt_bought}''')
-            log_file.write(f'{coins_inserted}, {dvt_bought}, ')
+        print(f'''
+        Total amount of coins inserted: {coins_inserted} {c.COIN_PAIR.upper()}
+        DVT bought: {dvt_bought}''')
 
-            client_wallet = qr.read_qr_code()  # scan wallet qr
+        log_file.write(f'{coins_inserted}, {dvt_bought}, ')
 
-            print(f'\nYour wallet address is: {client_wallet}')
-            print(f'\nSending {round(dvt_bought - c.TX_FEE, 3)} to {client_wallet}')
-            log_file.write(f'{client_wallet}, ')
+        client_wallet = qr.read_qr_code()  # scan wallet qr
 
-            # deposit dvt to client
-            tx_id = devault.deposit(client_wallet, dvt_bought, c.ATM_WALLET)
-            print(f'''\n
-            Transaction ID: {tx_id})\n
-            View on blockexplorer: https://exploredvt.com/#/DVT/mainnet/tx/{tx_id}
-            ''')
-            log_file.write(f'{tx_id}\n')
+        print(f'\nYour wallet address is: {client_wallet}')
+        print(f'\nSending {round(dvt_bought - c.TX_FEE, 3)} to {client_wallet}')
+        log_file.write(f'{client_wallet}, ')
 
-            coinstuff.delay_print("Thank you for buying DeVault!!!")
-            time.sleep(5)
-            log_aftet_loop = True
-        else:
-            log_aftet_loop = False
+        # deposit dvt to client
+        tx_id = devault.deposit(client_wallet, dvt_bought, c.ATM_WALLET)
+        print(f'''\n
+        Transaction ID: {tx_id})\n
+        View on blockexplorer: https://exploredvt.com/#/DVT/mainnet/tx/{tx_id}
+        ''')
+        log_file.write(f'{tx_id}\n')
+        coinstuff.delay_print("Thank you for buying DeVault!!!")
+        time.sleep(5)
