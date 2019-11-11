@@ -1,4 +1,4 @@
-# methods to initialize and read coinslot via joystick usb encoder
+# initialize and read coinslot via joystick usb encoder
 import usb.core
 import time
 import config as c
