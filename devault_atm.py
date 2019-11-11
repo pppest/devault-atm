@@ -1,7 +1,7 @@
 import os
 import coinstuff
 import coinslot
-import devault
+import delight
 import qr
 import time
 import config as c
@@ -13,8 +13,8 @@ from datetime import date, datetime
 device = coinslot.initiate_device(c.USB_VENDOR_ID, c.USB_PRODUCT_ID)
 
 # make sure wallet is loaded
-devault.start_daemon()
-devault.load_wallet(c.ATM_WALLET)
+delight.start_daemon()
+delight.load_wallet(c.ATM_WALLET)
 
 # log file
 log_file_name = "devaultatm-" + str(date.today()) + ".log"
@@ -36,7 +36,7 @@ while True:
                                               c.COIN_DECIMALS)
     coins_inserted = 0
     dvt_bought = 0
-    atm_balance = devault.get_balance(c.ATM_WALLET)
+    atm_balance = delight.get_balance(c.ATM_WALLET)
 
     log_file.write(f'{str(datetime.now())[0:19]}, {price_with_fee}, {atm_balance}, ')
 
@@ -82,7 +82,7 @@ while True:
         log_file.write(f'{client_wallet}, ')
 
         # deposit dvt to client
-        tx_id = devault.deposit(client_wallet, dvt_bought, c.ATM_WALLET)
+        tx_id = delight.deposit(client_wallet, dvt_bought, c.ATM_WALLET)
         print(f'''\n
         Transaction ID: {tx_id})\n
         View on blockexplorer: https://exploredvt.com/#/DVT/mainnet/tx/{tx_id}
