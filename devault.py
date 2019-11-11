@@ -12,21 +12,18 @@ def start_daemon():
     print('Starting daemon.')
     cmd = 'delight daemon start'
     os.system(cmd)
-    return
 
 
 def stop_daemon():
     print('Stopping daemon')
     cmd = 'delight daemon stop'
     os.system(cmd)
-    return
 
 
 def load_wallet(path_to_wallet):
     print('Loading wallet...')
     cmd = f'delight daemon load_wallet -w {path_to_wallet}'
     os.system(cmd)
-    return
 
 
 def get_balance(path_to_wallet):
@@ -67,4 +64,5 @@ def payout_to_client(address, amount, path_to_wallet):
     start_daemon()  # make sure daemon is running
     load_wallet(path_to_wallet)
     deposit(address, amount, path_to_wallet)
-    return
+    
+    
