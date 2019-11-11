@@ -1,7 +1,7 @@
 # for fetching price from coingecko
 COIN = "devault"
 COIN_PAIR = "mxn"
-COIN_DECIMALS = 8
+COIN_DECIMALS = 3 # 8, not sure I use this have to chek and maybe delete
 
 
 # atm specific
