@@ -1,6 +1,6 @@
-# this module is for communicating with the DeLight wallet
+# communication with the DeLight wallet
 # to read atm devault wallet and send bought amount to client
-# for readability and consistency I define commands for os as a string
+# for readability I define commands for os as a string
 # before calling
 
 import os
