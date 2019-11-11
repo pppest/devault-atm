@@ -5,13 +5,24 @@ USE AT OWN RISK!\
 
 v. 0.01 - IS WHAT IT IS ALPHA\
 Terminal only\
-Known problems: delight wallet throws error if there are unconfirmed transactions, fix logging newlines in case of no buy\
+Known problems: delight wallet throws error if there are unconfirmed transactions
+
+Hey! So this is my first python program. I sae the lightning ATM by @21isenough (https://github.com/21isenough/LightningATM)
+and thought that I could do something like that for DeVault. One youtube tutorial w python basics later I started coding and this is the result.
+You can find me in the DeVault Discord https://discord.gg/JnRZ7BB 
+
+Pest
+
 \
-plans: maybe move welcome text to config.py, maybe a qt interface\
+plans: gui, building the actual thing etc..
 \
 included example log file\
 \
-devault.py\
+devault_atm.py
+this is the app
+
+\
+delight.py\
 talks to delight daemon\
 
 qr.py\
@@ -20,6 +31,5 @@ reads qr codes w webcam using opencv and zbar
 coinslot.py\
 reads coinslot via USB encoder
 
-coinstuff.py\
-need to change the name\
-has fucntions to get coinprice and slow print 
+coingecko_price.py\
+has functions to get coinprice
