@@ -1,5 +1,5 @@
 import os
-import coinstuff
+import coingecko_price
 import coinslot
 import delight
 import qr
