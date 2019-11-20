@@ -6,7 +6,7 @@ COIN_DECIMALS = 3 # 8, not sure I use this have to chek and maybe delete
 
 # atm specific
 ATM_FEE = 1   # in percent
-ATM_WALLET = '/home/ok/.delight/wallets/ATM_WALLET'
+ATM_WALLET = '/home/pest/.delight/wallets/ATM_WALLET'
 TX_FEE = 0.001
 
 

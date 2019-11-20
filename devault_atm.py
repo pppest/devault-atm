@@ -1,10 +1,11 @@
 import os
-import coingecko_price
+import coingecko_price as cp
 import coinslot
 import delight
 import qr
 import time
 import config as c
+import sys
 from datetime import date, datetime
 
 
@@ -32,7 +33,7 @@ def delay_print(s):
 
 
 while True:
-    price_with_fee = coinstuff.price_with_fee(c.COIN, c.COIN_PAIR, c.ATM_FEE,
+    price_with_fee = cp.price_with_fee(c.COIN, c.COIN_PAIR, c.ATM_FEE,
                                               c.COIN_DECIMALS)
     coins_inserted = 0
     dvt_bought = 0
